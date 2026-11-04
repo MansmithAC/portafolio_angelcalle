@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ANGEL CALLE — 3D & 2D Modular Game Assets</title>
+<script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Red+Hat+Text:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0E17;--cy:#00E5FF;--ice:#F1F5F9;--line:rgba(241,245,249,.12);--soft:rgba(241,245,249,.62);--mono:'JetBrains Mono',ui-monospace,Consolas,monospace;--sans:'Red Hat Text',system-ui,sans-serif;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px);background:var(--bg)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ice);font-family:var(--sans);line-height:1.65;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--mono)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.tag{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--cy)}
+h1,h2,h3{font-family:var(--mono);font-weight:700;margin:0;line-height:1.05}
+h2{font-size:clamp(26px,4vw,40px);margin:10px 0 36px}
+#glow{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(420px circle at var(--mx,50%) var(--my,30%),rgba(0,229,255,.09),transparent 70%)}
+nav{position:fixed;top:0;left:0;right:0;z-index:20;padding-top:env(safe-area-inset-top,0px);background:rgba(10,14,23,.78);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;justify-content:space-between;align-items:center;height:56px}
+nav b{font-family:var(--mono);font-size:14px;letter-spacing:.08em}
+nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0}
+nav ul a{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);transition:color .2s}
+nav ul a:hover,nav ul a.on{color:var(--cy)}
+section{position:relative;z-index:1;padding:96px 0}
+#hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:110px 0 70px;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:48px 48px;-webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent)}
+#hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center}
+.status{display:inline-flex;gap:10px;align-items:center;font-family:var(--mono);font-size:12px;border:1px solid var(--line);padding:7px 14px;margin-bottom:26px;background:rgba(10,14,23,.7)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--cy);box-shadow:0 0 10px var(--cy);animation:p 1.8s infinite}
+@keyframes p{50%{opacity:.25}}
+#hero h1{font-size:clamp(44px,8.5vw,96px);letter-spacing:-.02em}
+#hero h1 span{color:var(--cy)}
+.sub{font-family:var(--mono);font-weight:500;font-size:clamp(13px,2vw,17px);color:var(--soft);margin:22px 0 34px;letter-spacing:.06em}
+.cta{display:flex;gap:14px;flex-wrap:wrap}
+.btn{font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:.08em;padding:13px 22px;border:1px solid var(--cy);color:var(--cy);transition:.25s;background:transparent;cursor:pointer}
+.btn:hover,.btn.fill{background:var(--cy);color:var(--bg)}
+.btn.fill:hover{background:transparent;color:var(--cy)}
+#diorama{width:100%;max-width:440px;justify-self:center;animation:fl 6s ease-in-out infinite;transition:transform .3s}
+@keyframes fl{50%{translate:0 -12px}}
+svg .f,svg .t,svg .r,svg .l{transition:fill .3s,stroke .3s,fill-opacity .3s}
+.t{fill:var(--ice);fill-opacity:.95}.l{fill:var(--ice);fill-opacity:.28}.r{fill:var(--ice);fill-opacity:.55}
+svg polygon{stroke:var(--bg);stroke-width:1.2;stroke-linejoin:round}
+.wire svg polygon,.card:hover svg polygon{fill:rgba(0,229,255,.06);fill-opacity:1;stroke:var(--cy);stroke-width:1.3}
+.filters{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap}
+.chip{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.1em;padding:8px 16px;border:1px solid var(--line);background:none;color:var(--soft);cursor:pointer;transition:.2s}
+.chip:hover{color:var(--cy);border-color:var(--cy)}
+.chip[aria-pressed=true]{background:var(--cy);color:var(--bg);border-color:var(--cy)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:22px}
+.card{border:1px solid var(--line);background:rgba(241,245,249,.025);cursor:pointer;text-align:left;color:inherit;font:inherit;padding:0;transition:border-color .25s,transform .25s,opacity .3s;position:relative;display:block;width:100%}
+.card:hover,.card:focus-visible{border-color:var(--cy);transform:translateY(-4px);outline:none}
+.card .view{aspect-ratio:4/3;display:grid;place-items:center;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:24px 24px;border-bottom:1px solid var(--line)}
+.card .view svg{width:72%;height:auto}
+.card .meta{padding:16px 18px 18px}
+.card .id{font-family:var(--mono);font-size:11px;color:var(--cy);letter-spacing:.14em}
+.card h3{font-size:18px;margin:6px 0 12px}
+.spec{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-family:var(--mono);font-size:11.5px;margin:0}
+.spec dt{color:var(--soft)}.spec dd{margin:0;text-align:right}
+.card::after{content:'INSPECCIONAR ↗';position:absolute;top:12px;right:12px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--cy);opacity:0;transition:opacity .25s}
+.card:hover::after{opacity:1}
+.card.hide{display:none}
+.note{font-family:var(--mono);font-size:11px;color:var(--soft);margin-top:22px}
+.pipe{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:46px;position:relative}
+.step{padding:0 22px 0 0;position:relative;opacity:0;transform:translateY(18px);transition:.7s}
+.step.in{opacity:1;transform:none}
+.step i{display:block;width:14px;height:14px;border:2px solid var(--cy);background:var(--bg);margin-bottom:18px;transform:rotate(45deg);position:relative;z-index:1}
+.step::before{content:'';position:absolute;top:6px;left:0;right:0;height:1px;background:var(--line)}
+.step n{font-family:var(--mono);font-size:12px;color:var(--cy);letter-spacing:.14em}
+.step h3{font-size:18px;margin:6px 0 8px}
+.step p{margin:0;color:var(--soft);font-size:15px}
+.about{display:grid;grid-template-columns:1.3fr 1fr;gap:48px}
+.about p{font-size:clamp(16px,2vw,19px);margin:0;color:var(--ice)}
+.concepts{list-style:none;margin:0;padding:0;display:grid;gap:10px;align-content:start}
+.concepts li{font-family:var(--mono);font-weight:700;font-size:15px;border:1px solid var(--line);padding:14px 16px;display:flex;justify-content:space-between;transition:.25s}
+.concepts li:hover{border-color:var(--cy);color:var(--cy);transform:translateX(6px)}
+.concepts li span{color:var(--cy);font-weight:500;font-size:12px}
+#contacto{text-align:center;border-top:1px solid var(--line)}
+#contacto h2{font-size:clamp(30px,6vw,60px)}
+#contacto p{color:var(--soft);max-width:520px;margin:0 auto 32px}
+.links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.links a{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--soft);border-bottom:1px solid var(--line);padding-bottom:3px;transition:.2s}
+.links a:hover{color:var(--cy);border-color:var(--cy)}
+footer{position:relative;z-index:1;padding:26px 0 36px;font-family:var(--mono);font-size:11px;color:var(--soft);border-top:1px solid var(--line)}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+dialog{background:var(--bg);color:var(--ice);border:1px solid var(--cy);padding:0;width:min(760px,92vw);max-height:90vh;overflow:auto}
+dialog::backdrop{background:rgba(10,14,23,.86);backdrop-filter:blur(4px)}
+.dh{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line)}
+.dh button{background:none;border:1px solid var(--line);color:var(--ice);font-family:var(--mono);padding:6px 12px;cursor:pointer}
+.dh button:hover{border-color:var(--cy);color:var(--cy)}
+.db{display:grid;grid-template-columns:1.1fr 1fr;gap:0}
+.db .big{display:grid;place-items:center;padding:24px;min-height:280px;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:24px 24px}
+.db .big svg{width:100%;animation:fl 5s ease-in-out infinite}
+.db .info{padding:22px}
+.db .info h3{font-size:22px;margin:6px 0 16px}
+.db .btn{margin-top:20px;padding:9px 16px;font-size:11px}
+@media(max-width:820px){#hero .wrap,.about,.db{grid-template-columns:1fr}#diorama{max-width:300px;order:-1}.pipe{grid-template-columns:1fr;gap:34px}.step{padding:0 0 0 0}nav ul{gap:14px}nav ul li:nth-child(n+4){display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+.cn{position:fixed;width:26px;height:26px;z-index:15;pointer-events:none;border:0 solid var(--ice);opacity:.9}
+.cn.a{left:16px;top:calc(env(safe-area-inset-top,0px) + 70px);border-width:2px 0 0 2px}
+.cn.b{right:16px;top:calc(env(safe-area-inset-top,0px) + 70px);border-width:2px 2px 0 0}
+.cn.c{left:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);border-width:0 0 2px 2px}
+.cn.d{right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);border-width:0 2px 2px 0}
+h2{position:relative}
+h2::before{content:'';position:absolute;left:-16px;top:-14px;width:20px;height:20px;border:2px solid var(--ice);border-right:0;border-bottom:0}
+#contacto h2{display:inline-block}
+.pg{display:block;margin:38px 0 0 auto;width:min(420px,100%);text-align:right;padding:0 14px 10px 0;border-right:2px solid var(--ice);border-bottom:2px solid var(--ice);font-size:15px}
+.card:hover svg circle,.card:hover svg path{stroke:var(--cy)}
+.ficha{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));border:1px solid var(--line);margin:0 0 28px}
+.ficha div{padding:14px 16px;border-right:1px solid var(--line)}
+.ficha dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--cy);text-transform:uppercase}
+.ficha dd{margin:4px 0 0;font-size:14px}
+.ph{aspect-ratio:16/9;border:1px dashed rgba(0,229,255,.45);display:grid;place-items:center;text-align:center;padding:10px;font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;color:var(--soft);background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:24px 24px}
+.acts{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin:0 0 22px}
+.ph.s{aspect-ratio:4/3}
+.act{border:1px solid var(--line);padding:20px}
+.act n{font-family:var(--mono);font-size:12px;color:var(--cy);letter-spacing:.14em}
+.act h3{font-size:17px;margin:8px 0 10px}
+.act p{margin:0 0 12px;color:var(--soft);font-size:15px}
+.act em{font-style:normal;font-family:var(--mono);font-size:12px}
+.elec{border:1px solid var(--cy);padding:22px;margin-top:22px}
+.elec h3{font-size:20px;margin:8px 0 10px}.elec p{margin:0;color:var(--soft)}
+.big canvas{width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+.big.v3{height:min(400px,55vh);min-height:0;padding:0;display:block}
+@media(max-width:820px){.acts{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="glow"></div>
+<i class="cn a"></i><i class="cn b"></i><i class="cn c"></i><i class="cn d"></i>
+<nav><div class="wrap"><b>ANGEL CALLE<span style="color:var(--cy)">_</span></b>
+<ul><li><a href="#assets">Trabajos</a></li><li><a href="#caso">Caso</a></li><li><a href="#sobre">Sobre mí</a></li><li><a href="#contacto">Contacto</a></li></ul></div></nav>
+
+<section id="hero"><div class="wrap">
+<div>
+<div class="status"><span class="dot"></span>Status: Open for freelance &amp; studio roles</div>
+<h1>ANGEL<br><span>CALLE</span></h1>
+<p class="sub">3D &amp; 2D Modular Game Assets // La Paz, BO</p>
+<div class="cta"><a class="btn fill" href="#assets">EXPLORAR ASSETS</a><a class="btn" href="#contacto">CONTACTAR</a></div>
+</div>
+<svg id="diorama" viewBox="0 0 440 380" aria-hidden="true"></svg>
+</div></section>
+
+<section id="assets"><div class="wrap">
+<div class="tag">// 01 — Trabajos</div>
+<h2>Módulos inspeccionables</h2>
+<div class="filters" role="group" aria-label="Filtrar assets">
+<button class="chip" data-f="all" aria-pressed="true">TODOS</button>
+<button class="chip" data-f="3D" aria-pressed="false">3D</button>
+<button class="chip" data-f="2D" aria-pressed="false">2D</button>
+</div>
+<div class="grid" id="grid"></div>
+<p class="note">* Fichas de ejemplo: reemplaza los datos en el arreglo ASSETS del script por tus piezas reales.</p>
+<span class="pg mono">ANGEL CALLE | 01</span>
+</div></section>
+
+<section id="caso"><div class="wrap">
+<div class="tag">// 02 — Estudio de caso</div>
+<h2>Nombre del proyecto</h2>
+<dl class="ficha"><div><dt>Cliente / Proyecto</dt><dd>[Placeholder]</dd></div><div><dt>Año</dt><dd>[2026]</dd></div><div><dt>Disciplina</dt><dd>[Modelado 3D]</dd></div><div><dt>Herramientas</dt><dd>[Blender · Illustrator]</dd></div><div><dt>Rol</dt><dd>[Tu rol exacto]</dd></div></dl>
+<div class="ph" style="margin-bottom:28px">IMAGEN PRINCIPAL · 16:9 · OPTIMIZADA PARA WEB</div>
+<div class="acts">
+<article class="act"><n>ACTO 01</n><h3>El conflicto y el brief</h3><p>[Placeholder] Contexto, restricciones del encargo, público objetivo y objetivos planteados antes de diseñar.</p><em>¿Cuál era la necesidad del cliente?</em></article>
+<article class="act"><n>ACTO 02</n><h3>El proceso y transformación</h3><p>[Placeholder] Bocetos iniciales, decisiones tipográficas, pruebas de color e iteraciones descartadas.</p><em>¿Cómo pensaste y probaste la solución?</em></article>
+<article class="act"><n>ACTO 03</n><h3>El desenlace y el impacto</h3><p>[Placeholder] La solución aplicada en su contexto real y el beneficio que generó.</p><em>¿Cuál fue el resultado final y cómo funciona en la vida real?</em></article>
+</div>
+<div class="acts"><div class="ph s">BOCETO / ITERACIÓN</div><div class="ph s">PRUEBA DE COLOR</div><div class="ph s">MOCKUP IN SITU</div></div>
+<div class="elec"><div class="tag">Sección electiva · F — Postmortem</div><h3>Lecciones aprendidas</h3><p>[Placeholder] Qué funcionó, qué cambiarías y qué aprendiste del proyecto.</p></div>
+<span class="pg mono">ANGEL CALLE | 02</span>
+</div></section>
+
+<section id="pipeline"><div class="wrap">
+<div class="tag">// 03 — Pipeline técnico</div>
+<h2>De la forma al motor</h2>
+<div class="pipe">
+<div class="step"><i></i><n>FASE 01</n><h3>Síntesis vectorial 2D</h3><p>Formas geométricas limpias y siluetas claras que definen el lenguaje visual de cada pieza.</p></div>
+<div class="step"><i></i><n>FASE 02</n><h3>Modelado y topología 3D</h3><p>Construcción modular con topología ordenada, pensada para encajar y reutilizarse.</p></div>
+<div class="step"><i></i><n>FASE 03</n><h3>Optimización para motor</h3><p>Polycount, mapas y texturas ajustados para integrarse en motores gráficos.</p></div>
+</div></div></section>
+
+<section id="sobre"><div class="wrap">
+<div class="tag">// 04 — Sobre mí</div>
+<h2>Bio</h2>
+<div class="about">
+<p>Angel Calle es un diseñador digital de La Paz, Bolivia, enfocado en la creación de assets 2D y 3D modulares para la industria de los videojuegos y productos digitales. Su enfoque combina la síntesis geométrica limpia con una construcción técnica rigurosa, desarrollando piezas optimizadas y listas para integrarse en motores gráficos y entornos interactivos. Apunta a colaborar con estudios y desarrolladoras internacionales aportando versatilidad visual, precisión técnica y un flujo de trabajo ágil.</p>
+<ul class="concepts"><li>Modularidad<span>01</span></li><li>Precisión técnica<span>02</span></li><li>Estilización geométrica<span>03</span></li><li>Funcionalidad digital<span>04</span></li></ul>
+</div></div></section>
+
+<section id="contacto"><div class="wrap">
+<div class="tag">// 05 — Contacto</div>
+<h2>Probemos tus ideas.</h2>
+<p>¿Tienes un estudio, un proyecto o una idea? Escríbeme y conversamos.</p>
+<a class="btn fill" href="mailto:angel.callem03@gmail.com">angel.callem03@gmail.com</a>
+<div class="links"><a href="www.linkedin.com/in/angel-calle-7593623b7">LINKEDIN</a><a href="#">BEHANCE</a><a href="https://www.behance.net/angelcalleam">LINKEDIN</a></div>
+</div></section>
+
+<footer><div class="wrap"><span>© 2026 ANGEL CALLE</span><span>La Paz, Bolivia // Built modular.</span></div></footer>
+
+<dialog id="dlg"><div class="dh"><span class="tag" id="dId"></span><button id="dClose" aria-label="Cerrar">CERRAR ✕</button></div>
+<div class="db"><div class="big" id="dView"></div><div class="info"><h3 id="dTitle"></h3><dl class="spec" id="dSpec"></dl><p class="note" id="dHint"></p><button class="btn" id="dWire">ALTERNAR WIREFRAME</button></div></div></dialog>
+
+<script>
+const U=.866;
+function iso(cubes,u,w,h,flat){
+  const cx=w/2,cy=h*.62;
+  const P=(x,y,z)=>[cx+(x-y)*U*u,cy+(x+y)*.5*u-z*u].map(n=>n.toFixed(1)).join(',');
+  const sorted=[...cubes].sort((a,b)=>(a[0]+a[1]+a[2])-(b[0]+b[1]+b[2]));
+  let o='';
+  sorted.forEach(([x,y,z])=>{
+    const k=flat?.18:1,t=z+k;
+    o+=`<polygon class="l" points="${P(x,y+1,t)} ${P(x+1,y+1,t)} ${P(x+1,y+1,z)} ${P(x,y+1,z)}"/>`;
+    o+=`<polygon class="r" points="${P(x+1,y,t)} ${P(x+1,y+1,t)} ${P(x+1,y+1,z)} ${P(x+1,y,z)}"/>`;
+    o+=`<polygon class="t" points="${P(x,y,t)} ${P(x+1,y,t)} ${P(x+1,y+1,t)} ${P(x,y+1,t)}"/>`;
+  });
+  return o;
+}
+const svg=(c,f)=>`<svg viewBox="0 0 300 260" aria-hidden="true">${iso(c,46,300,260,f)}</svg>`;
+const base3=[];for(let i=0;i<3;i++)for(let j=0;j<3;j++)base3.push([i,j,0]);
+const ASSETS=[
+ {id:'ASSET_01',t:'Modular Staircase',k:'3D',c:[[0,0,0],[1,0,0],[1,0,1],[2,0,0],[2,0,1],[2,0,2],[0,1,0]],s:{Polycount:'1.2k tris',Maps:'Albedo / AO / Normal','Texture size':'1024²','Target engine':'Unity · Unreal'}},
+ {id:'ASSET_02',t:'Tower Kit',k:'3D',c:[[0,0,0],[0,0,1],[0,0,2],[0,0,3],[1,0,0],[0,1,0],[1,1,0]],s:{Polycount:'2.4k tris',Maps:'Albedo / ORM','Texture size':'2048²','Target engine':'Unreal 5'}},
+ {id:'ASSET_03',t:'Arch Portal',k:'3D',c:[[0,0,0],[0,0,1],[0,0,2],[1,0,2],[2,0,2],[2,0,1],[2,0,0]],s:{Polycount:'1.8k tris',Maps:'Albedo / Normal','Texture size':'1024²','Target engine':'Godot · Unity'}},
+ {id:'ASSET_04',t:'Changes — Reimaginación de portadas',k:'2D',art:changesArt(),s:{Disciplina:'Ilustración vectorial',Formato:'SVG + PNG',Paleta:'Blanco sobre negro',Piezas:'3 portadas'}}
+];
+const grid=document.getElementById('grid');
+ASSETS.forEach((a,i)=>{
+  const b=document.createElement('button');b.className='card';b.dataset.k=a.k;b.setAttribute('aria-label','Inspeccionar '+a.t);
+  b.innerHTML=`<div class="view">${a.art||svg(a.c,a.f)}</div><div class="meta"><div class="id">${a.id} // ${a.k}</div><h3>${a.t}</h3><dl class="spec">${Object.entries(a.s).map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl></div>`;
+  b.onclick=()=>openD(a);grid.appendChild(b);
+});
+const dlg=document.getElementById('dlg');
+function openD(a){
+  dId.textContent=a.id+' // '+a.k;dTitle.textContent=a.t;
+  show(a);
+  dSpec.innerHTML=Object.entries(a.s).map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('');
+  dlg.showModal();after(a);
+}
+dClose.onclick=()=>dlg.close();
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+function show(a){dView.className='big';dView.innerHTML=a.art||svg(a.c,a.f);dHint.textContent=''}
+function after(a){if(a.k==='3D')open3(a)}
+function changesArt(){
+  const K='stroke="#F1F5F9" fill="none"',tile=x=>`<rect x="${x}" y="82" width="88" height="88" fill="rgba(241,245,249,.05)" stroke="rgba(241,245,249,.25)"/>`;
+  let o=tile(6),cx=50,cy=152;
+  for(let r=14;r<=40;r+=6)o+=`<path d="M${cx-r} ${cy}A${r} ${r} 0 0 1 ${cx+r} ${cy}" ${K} stroke-width="1"/>`;
+  o+=`<path d="M${cx} ${cy-24}Q${cx} ${cy} ${cx+22} ${cy}L${cx-22} ${cy}Q${cx} ${cy} ${cx} ${cy-24}Z" fill="#F1F5F9"/><path d="M12 ${cy}H94" ${K} stroke-width="1.2"/>`;
+  o+=tile(106);
+  for(let r=40;r>3;r-=3)o+=`<circle cx="${150+(40-r)*.04}" cy="126" r="${r}" ${K} stroke-width="${r>20?1:.7}"/>`;
+  o+=tile(206)+'<rect x="212" y="88" width="76" height="76" fill="#F1F5F9" transform="rotate(-2 250 126)"/>';
+  for(let i=0;i<16;i++){const a=(i*22.5+(i%3)*5)*Math.PI/180,l=26+(i*7%3)*5;o+=`<line x1="250" y1="126" x2="${(250+Math.cos(a)*l).toFixed(1)}" y2="${(126+Math.sin(a)*l).toFixed(1)}" stroke="#0A0E17" stroke-width="1.3"/>`}
+  return `<svg viewBox="0 0 300 260" aria-hidden="true">${o}</svg>`;
+}
+// Visor 3D (three.js): órbita propia con arrastre y rueda
+let R,S3,C3,G3,mat,lm,raf,auto=true,yaw=.8,pit=.45,dist=9,ty=1,drag=0,lx=0,ly=0,wf=false;
+function init3(){
+  R=new THREE.WebGLRenderer({antialias:true,alpha:true});R.setPixelRatio(Math.min(devicePixelRatio,2));
+  S3=new THREE.Scene();C3=new THREE.PerspectiveCamera(38,1,.1,100);
+  S3.add(new THREE.AmbientLight(0xF1F5F9,.5));
+  const d=new THREE.DirectionalLight(0xF1F5F9,.95);d.position.set(5,9,6);S3.add(d);
+  const g=new THREE.GridHelper(12,12,0x00E5FF,0x00E5FF);g.material.transparent=true;g.material.opacity=.2;S3.add(g);
+  mat=new THREE.MeshLambertMaterial({color:0xF1F5F9});lm=new THREE.LineBasicMaterial({color:0x00E5FF,transparent:true,opacity:.35});
+  const c=R.domElement;
+  c.addEventListener('pointerdown',e=>{drag=1;auto=false;lx=e.clientX;ly=e.clientY;c.setPointerCapture(e.pointerId)});
+  c.addEventListener('pointermove',e=>{if(!drag)return;yaw-=(e.clientX-lx)*.01;pit=Math.max(.05,Math.min(1.45,pit+(e.clientY-ly)*.008));lx=e.clientX;ly=e.clientY});
+  c.addEventListener('pointerup',()=>drag=0);c.addEventListener('pointercancel',()=>drag=0);
+  c.addEventListener('wheel',e=>{e.preventDefault();dist=Math.max(4,Math.min(24,dist+e.deltaY*.01))},{passive:false});
+}
+function open3(a){
+  if(!window.THREE)return;
+  try{
+    if(!R)init3();
+    if(G3)S3.remove(G3);
+    G3=new THREE.Group();
+    const bx=new THREE.BoxGeometry(1,1,1),ed=new THREE.EdgesGeometry(bx);
+    a.c.forEach(([x,y,z])=>{const m=new THREE.Mesh(bx,mat);m.position.set(x+.5,z+.5,y+.5);m.add(new THREE.LineSegments(ed,lm));G3.add(m)});
+    const b=new THREE.Box3().setFromObject(G3),c=b.getCenter(new THREE.Vector3()),s=b.getSize(new THREE.Vector3());
+    G3.position.set(-c.x,-b.min.y,-c.z);S3.add(G3);
+    dist=Math.max(s.x,s.y,s.z)*2.4+4;ty=s.y/2;yaw=.8;pit=.45;wf=false;
+    auto=!matchMedia('(prefers-reduced-motion:reduce)').matches;
+    mat.wireframe=false;mat.color.set(0xF1F5F9);lm.opacity=.35;
+    dView.className='big v3';dView.innerHTML='';dView.appendChild(R.domElement);
+    dHint.textContent='ARRASTRA PARA ROTAR · RUEDA PARA ZOOM';
+    fit();cancelAnimationFrame(raf);loop();
+  }catch(e){show(a)}
+}
+function fit(){const w=dView.clientWidth,h=dView.clientHeight;if(!w||!h)return;R.setSize(w,h,false);C3.aspect=w/h;C3.updateProjectionMatrix()}
+function loop(){
+  raf=requestAnimationFrame(loop);if(auto&&!drag)yaw+=.006;
+  C3.position.set(dist*Math.cos(pit)*Math.sin(yaw),ty+dist*Math.sin(pit),dist*Math.cos(pit)*Math.cos(yaw));
+  C3.lookAt(0,ty,0);R.render(S3,C3);
+}
+addEventListener('resize',()=>{if(R&&dlg.open)fit()});
+dlg.addEventListener('close',()=>cancelAnimationFrame(raf));
+dWire.onclick=()=>{
+  if(dView.classList.contains('v3')){wf=!wf;mat.wireframe=wf;mat.color.set(wf?0x00E5FF:0xF1F5F9);lm.opacity=wf?0:.35}
+  else dView.classList.toggle('wire');
+};
+document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
+  document.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===c));
+  document.querySelectorAll('.card').forEach(k=>k.classList.toggle('hide',c.dataset.f!=='all'&&k.dataset.k!==c.dataset.f));
+});
+// Hero diorama
+const dio=document.getElementById('diorama');
+dio.innerHTML=iso([...base3,[0,0,1],[0,0,2],[1,0,1],[2,2,1],[1,1,1],[2,0,1],[2,0,2]].concat([[3,0,0],[3,1,0]]),40,440,380);
+dio.querySelectorAll('polygon').forEach(p=>{p.style.cursor='default'});
+// Interacciones
+const root=document.documentElement;
+addEventListener('pointermove',e=>{root.style.setProperty('--mx',e.clientX+'px');root.style.setProperty('--my',e.clientY+'px');
+  const rx=(e.clientX/innerWidth-.5)*10,ry=(e.clientY/innerHeight-.5)*-10;dio.style.transform=`perspective(800px) rotateY(${rx}deg) rotateX(${ry}deg)`});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.3});
+document.querySelectorAll('.step').forEach((s,i)=>{s.style.transitionDelay=i*.15+'s';io.observe(s)});
+const links=[...document.querySelectorAll('nav ul a')];
+const so=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(l=>l.classList.toggle('on',l.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-45% 0px -50% 0px'});
+document.querySelectorAll('section').forEach(s=>so.observe(s));
+</script>
+</body>
+</html>
