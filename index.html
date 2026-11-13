@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ANGEL CALLE — 3D & 2D Modular Game Assets</title>
 <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Red+Hat+Text:wght@400;500&display=swap" rel="stylesheet">
@@ -44,7 +45,7 @@ section{position:relative;z-index:1;padding:96px 0}
 svg .f,svg .t,svg .r,svg .l{transition:fill .3s,stroke .3s,fill-opacity .3s}
 .t{fill:var(--ice);fill-opacity:.95}.l{fill:var(--ice);fill-opacity:.28}.r{fill:var(--ice);fill-opacity:.55}
 svg polygon{stroke:var(--bg);stroke-width:1.2;stroke-linejoin:round}
-.wire svg polygon,.card:hover svg polygon{fill:rgba(0,229,255,.06);fill-opacity:1;stroke:var(--cy);stroke-width:1.3}
+.card:hover svg polygon{fill:rgba(0,229,255,.06);fill-opacity:1;stroke:var(--cy);stroke-width:1.3}
 .filters{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap}
 .chip{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.1em;padding:8px 16px;border:1px solid var(--line);background:none;color:var(--soft);cursor:pointer;transition:.2s}
 .chip:hover{color:var(--cy);border-color:var(--cy)}
@@ -125,6 +126,28 @@ h2::before{content:'';position:absolute;left:-16px;top:-14px;width:20px;height:2
 .big canvas{width:100%;height:100%;display:block;touch-action:none;cursor:grab}
 .big.v3{height:min(400px,55vh);min-height:0;padding:0;display:block}
 @media(max-width:820px){.acts{grid-template-columns:1fr}}
+.card .view img{width:100%;height:100%;object-fit:cover;display:block}
+.big img{max-width:100%;max-height:60vh;display:block}
+img.ph{display:block;width:100%;object-fit:cover;border:1px solid var(--line)}
+.car{margin-bottom:22px;outline:none}
+.car-v{overflow:hidden;border:1px solid var(--line);touch-action:pan-y}
+.car-t{display:flex;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.slide{min-width:100%;padding:18px}
+.slide .ph{margin-bottom:24px}
+.stxt{display:grid;grid-template-columns:1fr 1.6fr;gap:12px 40px;padding:0 6px 8px}
+.stxt n{display:block;font-family:var(--mono);font-size:12px;color:var(--cy);letter-spacing:.14em}
+.stxt h3{font-size:clamp(20px,3vw,28px);margin:8px 0 14px}
+.stxt em{font-style:normal;font-family:var(--mono);font-size:12.5px;color:var(--cy);line-height:1.6}
+.stxt p{margin:0 0 14px;color:var(--soft);font-size:16px;line-height:1.75}
+.car-c{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:14px}
+.car-m{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;color:var(--soft)}
+.car-d{display:flex;gap:14px}
+.car-d button{width:10px;height:10px;padding:0;border:1px solid var(--cy);background:none;transform:rotate(45deg);cursor:pointer}
+.car-d button[aria-current=true]{background:var(--cy)}
+.cb{font-family:var(--mono);font-weight:700;font-size:12px;letter-spacing:.08em;border:1px solid var(--cy);color:var(--cy);background:none;padding:11px 18px;cursor:pointer;transition:.2s}
+.cb:hover:not(:disabled){background:var(--cy);color:var(--bg)}
+.cb:disabled{opacity:.3;cursor:default}
+@media(max-width:820px){.stxt{grid-template-columns:1fr}.slide{padding:12px}.cb{padding:10px 12px;font-size:11px}}
 </style>
 </head>
 <body>
@@ -152,7 +175,6 @@ h2::before{content:'';position:absolute;left:-16px;top:-14px;width:20px;height:2
 <button class="chip" data-f="2D" aria-pressed="false">2D</button>
 </div>
 <div class="grid" id="grid"></div>
-<p class="note">* Fichas de ejemplo: reemplaza los datos en el arreglo ASSETS del script por tus piezas reales.</p>
 <span class="pg mono">ANGEL CALLE | 01</span>
 </div></section>
 
@@ -161,12 +183,14 @@ h2::before{content:'';position:absolute;left:-16px;top:-14px;width:20px;height:2
 <h2>Nombre del proyecto</h2>
 <dl class="ficha"><div><dt>Cliente / Proyecto</dt><dd>[Placeholder]</dd></div><div><dt>Año</dt><dd>[2026]</dd></div><div><dt>Disciplina</dt><dd>[Modelado 3D]</dd></div><div><dt>Herramientas</dt><dd>[Blender · Illustrator]</dd></div><div><dt>Rol</dt><dd>[Tu rol exacto]</dd></div></dl>
 <div class="ph" style="margin-bottom:28px">IMAGEN PRINCIPAL · 16:9 · OPTIMIZADA PARA WEB</div>
-<div class="acts">
-<article class="act"><n>ACTO 01</n><h3>El conflicto y el brief</h3><p>[Placeholder] Contexto, restricciones del encargo, público objetivo y objetivos planteados antes de diseñar.</p><em>¿Cuál era la necesidad del cliente?</em></article>
-<article class="act"><n>ACTO 02</n><h3>El proceso y transformación</h3><p>[Placeholder] Bocetos iniciales, decisiones tipográficas, pruebas de color e iteraciones descartadas.</p><em>¿Cómo pensaste y probaste la solución?</em></article>
-<article class="act"><n>ACTO 03</n><h3>El desenlace y el impacto</h3><p>[Placeholder] La solución aplicada en su contexto real y el beneficio que generó.</p><em>¿Cuál fue el resultado final y cómo funciona en la vida real?</em></article>
+<div class="car" id="car" role="region" aria-roledescription="carrusel" aria-label="Actos del estudio de caso" tabindex="0">
+<div class="car-v"><div class="car-t" id="carT">
+<article class="slide"><div class="ph">IMAGEN DEL ACTO 01 · 16:9</div><div class="stxt"><div><n>ACTO 01</n><h3>El conflicto y el brief</h3><em>¿Cuál era la necesidad del cliente?</em></div><div><p>[Placeholder] Describe el contexto del proyecto: quién fue el cliente o el público, qué se pedía y bajo qué restricciones de tiempo, técnica o plataforma.</p><p>[Placeholder] Cierra con los objetivos que te planteaste antes de diseñar y cómo comprobaste que se cumplieran.</p></div></div></article>
+<article class="slide"><div class="ph">IMAGEN DEL ACTO 02 · 16:9</div><div class="stxt"><div><n>ACTO 02</n><h3>El proceso y transformación</h3><em>¿Cómo pensaste y probaste la solución?</em></div><div><p>[Placeholder] Muestra cómo desarrollaste la idea: bocetos iniciales, decisiones de forma y tipografía, pruebas de color y referencias.</p><p>[Placeholder] Incluye las iteraciones que descartaste y explica por qué. Aquí se ve cómo piensas bajo presión.</p></div></div></article>
+<article class="slide"><div class="ph">IMAGEN DEL ACTO 03 · 16:9</div><div class="stxt"><div><n>ACTO 03</n><h3>El desenlace y el impacto</h3><em>¿Cuál fue el resultado final y cómo funciona en la vida real?</em></div><div><p>[Placeholder] Presenta la solución final aplicada en su contexto real: mockups, render en motor o la pieza terminada.</p><p>[Placeholder] Explica el impacto o beneficio que generó y qué lecciones te llevas del proyecto.</p></div></div></article>
+</div></div>
+<div class="car-c"><button class="cb" id="cPrev" aria-label="Acto anterior">← ANTERIOR</button><div class="car-m"><div class="car-d" id="cDots"></div><span class="mono" id="cCount"></span></div><button class="cb" id="cNext" aria-label="Siguiente acto">SIGUIENTE →</button></div>
 </div>
-<div class="acts"><div class="ph s">BOCETO / ITERACIÓN</div><div class="ph s">PRUEBA DE COLOR</div><div class="ph s">MOCKUP IN SITU</div></div>
 <div class="elec"><div class="tag">Sección electiva · F — Postmortem</div><h3>Lecciones aprendidas</h3><p>[Placeholder] Qué funcionó, qué cambiarías y qué aprendiste del proyecto.</p></div>
 <span class="pg mono">ANGEL CALLE | 02</span>
 </div></section>
@@ -190,16 +214,16 @@ h2::before{content:'';position:absolute;left:-16px;top:-14px;width:20px;height:2
 
 <section id="contacto"><div class="wrap">
 <div class="tag">// 05 — Contacto</div>
-<h2>Probemos tus ideas.</h2>
+<h2>Construyamos algo modular.</h2>
 <p>¿Tienes un estudio, un proyecto o una idea? Escríbeme y conversamos.</p>
-<a class="btn fill" href="mailto:angel.callem03@gmail.com">angel.callem03@gmail.com</a>
-<div class="links"><a href="www.linkedin.com/in/angel-calle-7593623b7">LINKEDIN</a><a href="#">BEHANCE</a><a href="https://www.behance.net/angelcalleam">LINKEDIN</a></div>
+<a class="btn fill" href="mailto:tucorreo@ejemplo.com">tucorreo@ejemplo.com</a>
+<div class="links"><a href="#">LINKEDIN</a><a href="#">BEHANCE</a></div>
 </div></section>
 
 <footer><div class="wrap"><span>© 2026 ANGEL CALLE</span><span>La Paz, Bolivia // Built modular.</span></div></footer>
 
 <dialog id="dlg"><div class="dh"><span class="tag" id="dId"></span><button id="dClose" aria-label="Cerrar">CERRAR ✕</button></div>
-<div class="db"><div class="big" id="dView"></div><div class="info"><h3 id="dTitle"></h3><dl class="spec" id="dSpec"></dl><p class="note" id="dHint"></p><button class="btn" id="dWire">ALTERNAR WIREFRAME</button></div></div></dialog>
+<div class="db"><div class="big" id="dView"></div><div class="info"><h3 id="dTitle"></h3><dl class="spec" id="dSpec"></dl><p class="note" id="dHint"></p></div></div></dialog>
 
 <script>
 const U=.866;
@@ -218,16 +242,38 @@ function iso(cubes,u,w,h,flat){
 }
 const svg=(c,f)=>`<svg viewBox="0 0 300 260" aria-hidden="true">${iso(c,46,300,260,f)}</svg>`;
 const base3=[];for(let i=0;i<3;i++)for(let j=0;j<3;j++)base3.push([i,j,0]);
+// TUS ARCHIVOS: añade a cada pieza  img:'img/mi-pieza.jpg'  (miniatura o imagen 2D)  y  model:'models/mi-pieza.glb'  (visor 3D)
 const ASSETS=[
- {id:'ASSET_01',t:'Modular Staircase',k:'3D',c:[[0,0,0],[1,0,0],[1,0,1],[2,0,0],[2,0,1],[2,0,2],[0,1,0]],s:{Polycount:'1.2k tris',Maps:'Albedo / AO / Normal','Texture size':'1024²','Target engine':'Unity · Unreal'}},
- {id:'ASSET_02',t:'Tower Kit',k:'3D',c:[[0,0,0],[0,0,1],[0,0,2],[0,0,3],[1,0,0],[0,1,0],[1,1,0]],s:{Polycount:'2.4k tris',Maps:'Albedo / ORM','Texture size':'2048²','Target engine':'Unreal 5'}},
- {id:'ASSET_03',t:'Arch Portal',k:'3D',c:[[0,0,0],[0,0,1],[0,0,2],[1,0,2],[2,0,2],[2,0,1],[2,0,0]],s:{Polycount:'1.8k tris',Maps:'Albedo / Normal','Texture size':'1024²','Target engine':'Godot · Unity'}},
- {id:'ASSET_04',t:'Changes — Reimaginación de portadas',k:'2D',art:changesArt(),s:{Disciplina:'Ilustración vectorial',Formato:'SVG + PNG',Paleta:'Blanco sobre negro',Piezas:'3 portadas'}}
+ {id:'ASSET_01',t:'Robot',k:'3D',
+  model:'modelos/Robot.glb',
+  img:'imgs/Robot.webp',
+  s:{Polycount:'—',Maps:'—','Texture size':'—','Target engine':'—'}},
+ {id:'ASSET_02',t:'Adorno Madera',k:'3D',
+  model:'modelos/adorno_madera.glb',
+  img:'imgs/adorno_madera.webp',
+  s:{Polycount:'—',Maps:'—','Texture size':'—','Target engine':'—'}},
+ {id:'ASSET_03',t:'BMO',k:'3D',
+  model:'modelos/bmo.glb',
+  img:'imgs/bmo.webp',
+  s:{Polycount:'—',Maps:'—','Texture size':'—','Target engine':'—'}},
+ {id:'ASSET_04',t:'Pistola',k:'3D',
+  model:'modelos/pistola.glb',
+  img:'imgs/pistola.webp',
+  s:{Polycount:'—',Maps:'—','Texture size':'—','Target engine':'—'}},
+ {id:'ASSET_05',t:'Changes 01',k:'2D',
+  img:'imgs/changes1.webp',
+  s:{Disciplina:'Ilustración vectorial',Formato:'SVG + PNG',Paleta:'Blanco sobre negro',Proyecto:'Reimaginación de portadas'}},
+ {id:'ASSET_06',t:'Changes 02',k:'2D',
+  img:'imgs/changes2.webp',
+  s:{Disciplina:'Ilustración vectorial',Formato:'SVG + PNG',Paleta:'Blanco sobre negro',Proyecto:'Reimaginación de portadas'}},
+ {id:'ASSET_07',t:'Changes 03',k:'2D',
+  img:'imgs/changes3.webp',
+  s:{Disciplina:'Ilustración vectorial',Formato:'SVG + PNG',Paleta:'Blanco sobre negro',Proyecto:'Reimaginación de portadas'}}
 ];
 const grid=document.getElementById('grid');
 ASSETS.forEach((a,i)=>{
   const b=document.createElement('button');b.className='card';b.dataset.k=a.k;b.setAttribute('aria-label','Inspeccionar '+a.t);
-  b.innerHTML=`<div class="view">${a.art||svg(a.c,a.f)}</div><div class="meta"><div class="id">${a.id} // ${a.k}</div><h3>${a.t}</h3><dl class="spec">${Object.entries(a.s).map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl></div>`;
+  b.innerHTML=`<div class="view">${a.img?`<img src="${a.img}" alt="${a.t}" loading="lazy">`:a.art||svg(a.c,a.f)}</div><div class="meta"><div class="id">${a.id} // ${a.k}</div><h3>${a.t}</h3><dl class="spec">${Object.entries(a.s).map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl></div>`;
   b.onclick=()=>openD(a);grid.appendChild(b);
 });
 const dlg=document.getElementById('dlg');
@@ -239,9 +285,9 @@ function openD(a){
 }
 dClose.onclick=()=>dlg.close();
 dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
-function show(a){dView.className='big';dView.innerHTML=a.art||svg(a.c,a.f);dHint.textContent=''}
+function show(a){dView.className='big';dView.innerHTML=a.img?`<img src="${a.img}" alt="${a.t}">`:a.art||svg(a.c,a.f);dHint.textContent=''}
 function after(a){if(a.k==='3D')open3(a)}
-function changesArt(){
+function changesArt(n){
   const K='stroke="#F1F5F9" fill="none"',tile=x=>`<rect x="${x}" y="82" width="88" height="88" fill="rgba(241,245,249,.05)" stroke="rgba(241,245,249,.25)"/>`;
   let o=tile(6),cx=50,cy=152;
   for(let r=14;r<=40;r+=6)o+=`<path d="M${cx-r} ${cy}A${r} ${r} 0 0 1 ${cx+r} ${cy}" ${K} stroke-width="1"/>`;
@@ -250,7 +296,7 @@ function changesArt(){
   for(let r=40;r>3;r-=3)o+=`<circle cx="${150+(40-r)*.04}" cy="126" r="${r}" ${K} stroke-width="${r>20?1:.7}"/>`;
   o+=tile(206)+'<rect x="212" y="88" width="76" height="76" fill="#F1F5F9" transform="rotate(-2 250 126)"/>';
   for(let i=0;i<16;i++){const a=(i*22.5+(i%3)*5)*Math.PI/180,l=26+(i*7%3)*5;o+=`<line x1="250" y1="126" x2="${(250+Math.cos(a)*l).toFixed(1)}" y2="${(126+Math.sin(a)*l).toFixed(1)}" stroke="#0A0E17" stroke-width="1.3"/>`}
-  return `<svg viewBox="0 0 300 260" aria-hidden="true">${o}</svg>`;
+  return `<svg viewBox="${[6,106,206][n]-4} 78 96 96" aria-hidden="true">${o}</svg>`;
 }
 // Visor 3D (three.js): órbita propia con arrastre y rueda
 let R,S3,C3,G3,mat,lm,raf,auto=true,yaw=.8,pit=.45,dist=9,ty=1,drag=0,lx=0,ly=0,wf=false;
@@ -272,12 +318,15 @@ function open3(a){
   try{
     if(!R)init3();
     if(G3)S3.remove(G3);
-    G3=new THREE.Group();
-    const bx=new THREE.BoxGeometry(1,1,1),ed=new THREE.EdgesGeometry(bx);
-    a.c.forEach(([x,y,z])=>{const m=new THREE.Mesh(bx,mat);m.position.set(x+.5,z+.5,y+.5);m.add(new THREE.LineSegments(ed,lm));G3.add(m)});
-    const b=new THREE.Box3().setFromObject(G3),c=b.getCenter(new THREE.Vector3()),s=b.getSize(new THREE.Vector3());
-    G3.position.set(-c.x,-b.min.y,-c.z);S3.add(G3);
-    dist=Math.max(s.x,s.y,s.z)*2.4+4;ty=s.y/2;yaw=.8;pit=.45;wf=false;
+    if(G3){S3.remove(G3);G3=null}
+    const cubes=()=>{const g=new THREE.Group(),bx=new THREE.BoxGeometry(1,1,1),ed=new THREE.EdgesGeometry(bx);
+      a.c.forEach(([x,y,z])=>{const m=new THREE.Mesh(bx,mat);m.position.set(x+.5,z+.5,y+.5);m.add(new THREE.LineSegments(ed,lm));g.add(m)});return g};
+    const put=g=>{if(G3)S3.remove(G3);G3=g;
+      const b=new THREE.Box3().setFromObject(g),c=b.getCenter(new THREE.Vector3()),s=b.getSize(new THREE.Vector3());
+      g.position.set(-c.x,-b.min.y,-c.z);S3.add(g);dist=Math.max(s.x,s.y,s.z)*2.4+4;ty=s.y/2};
+    yaw=.8;pit=.45;wf=false;
+    if(a.model&&THREE.GLTFLoader){new THREE.GLTFLoader().load(a.model,gl=>{const g=gl.scene,z=new THREE.Box3().setFromObject(g).getSize(new THREE.Vector3());
+      g.scale.setScalar(4/(Math.max(z.x,z.y,z.z)||1));g.userData.glb=1;put(g)},undefined,()=>put(cubes()))}else put(cubes());
     auto=!matchMedia('(prefers-reduced-motion:reduce)').matches;
     mat.wireframe=false;mat.color.set(0xF1F5F9);lm.opacity=.35;
     dView.className='big v3';dView.innerHTML='';dView.appendChild(R.domElement);
@@ -293,10 +342,6 @@ function loop(){
 }
 addEventListener('resize',()=>{if(R&&dlg.open)fit()});
 dlg.addEventListener('close',()=>cancelAnimationFrame(raf));
-dWire.onclick=()=>{
-  if(dView.classList.contains('v3')){wf=!wf;mat.wireframe=wf;mat.color.set(wf?0x00E5FF:0xF1F5F9);lm.opacity=wf?0:.35}
-  else dView.classList.toggle('wire');
-};
 document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
   document.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===c));
   document.querySelectorAll('.card').forEach(k=>k.classList.toggle('hide',c.dataset.f!=='all'&&k.dataset.k!==c.dataset.f));
@@ -314,6 +359,27 @@ document.querySelectorAll('.step').forEach((s,i)=>{s.style.transitionDelay=i*.15
 const links=[...document.querySelectorAll('nav ul a')];
 const so=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(l=>l.classList.toggle('on',l.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-45% 0px -50% 0px'});
 document.querySelectorAll('section').forEach(s=>so.observe(s));
+// Carrusel de actos: lo controla el usuario (botones, puntos, flechas del teclado o deslizar)
+(()=>{
+  const car=document.getElementById('car'),t=document.getElementById('carT'),s=[...t.children],
+        dots=document.getElementById('cDots'),cnt=document.getElementById('cCount'),
+        prev=document.getElementById('cPrev'),next=document.getElementById('cNext');
+  let i=0,x0=null;
+  s.forEach((_,k)=>{const b=document.createElement('button');b.setAttribute('aria-label','Ir al acto '+(k+1));b.onclick=()=>go(k);dots.appendChild(b)});
+  function go(n){
+    i=Math.max(0,Math.min(s.length-1,n));
+    t.style.transform=`translateX(${-i*100}%)`;
+    s.forEach((x,k)=>{x.inert=k!==i;x.setAttribute('aria-hidden',k!==i)});
+    [...dots.children].forEach((d,k)=>d.setAttribute('aria-current',k===i));
+    cnt.textContent=String(i+1).padStart(2,'0')+' / '+String(s.length).padStart(2,'0');
+    prev.disabled=i===0;next.disabled=i===s.length-1;
+  }
+  prev.onclick=()=>go(i-1);next.onclick=()=>go(i+1);
+  car.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')go(i-1);if(e.key==='ArrowRight')go(i+1)});
+  car.addEventListener('pointerdown',e=>{x0=e.clientX});
+  car.addEventListener('pointerup',e=>{if(x0!==null&&Math.abs(e.clientX-x0)>60&&!e.target.closest('button'))go(i+(e.clientX<x0?1:-1));x0=null});
+  go(0);
+})();
 </script>
 </body>
 </html>
